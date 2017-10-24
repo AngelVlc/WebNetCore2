@@ -1,0 +1,1 @@
+web: cd $HOME/heroku_output/WebNetCore2 && dotnet ./WebNetCore2.dll
