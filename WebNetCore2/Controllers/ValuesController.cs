@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace WebNetCore2.Controllers
 {
+    [Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
@@ -23,13 +24,22 @@ namespace WebNetCore2.Controllers
         {
             try
             {
+                var list = new List<string>();
 
-                using (var context = SampleContextFactory.Create(_options.ConStr))
-                {
-                    var result = context.locations.ToList();
+                list.Add("1");
+                list.Add("2");
+                list.Add("3");
+                list.Add("4");
 
-                    return result;
-                }
+                return list;
+
+
+                //using (var context = SampleContextFactory.Create(_options.ConStr))
+                //{
+                //    var result = context.locations.ToList();
+
+                //    return result;
+                //}
             }
             catch (Exception ex)
             {
