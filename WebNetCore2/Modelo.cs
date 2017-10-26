@@ -5,17 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebNetCore2
-{
-    public class MyOptions
-    {
-        public MyOptions()
-        {
-
-        }
-
-        public string ConStr { get; set; }
-    }
-
+{  
     //http://insidemysql.com/howto-starting-with-mysql-ef-core-provider-and-connectornet-7-0-4/
 
     /// <summary>
@@ -28,24 +18,6 @@ namespace WebNetCore2
         { }
 
         public DbSet<locations> locations { get; set; }
-    }
-
-    /// <summary>
-    /// Factory class for EmployeesContext
-    /// </summary>
-    public static class SampleContextFactory
-    {
-        public static SampleDbContext Create(string connectionString)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<SampleDbContext>();
-            optionsBuilder.UseMySql(connectionString);
-
-            //Ensure database creation
-            var context = new SampleDbContext(optionsBuilder.Options);
-            context.Database.EnsureCreated();
-
-            return context;
-        }
     }
 
     /// <summary>

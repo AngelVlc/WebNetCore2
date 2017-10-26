@@ -7,15 +7,15 @@ using Microsoft.Extensions.Options;
 
 namespace WebNetCore2.Controllers
 {
-    [Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
+    //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        private readonly MyOptions _options;
+        private readonly SampleDbContext _dbContext;
 
-        public ValuesController(IOptions<MyOptions> optionsAccessor)
+        public ValuesController( SampleDbContext dbContext)
         {
-            _options = optionsAccessor.Value;
+            _dbContext = dbContext;
         }
 
         // GET api/values
@@ -24,22 +24,19 @@ namespace WebNetCore2.Controllers
         {
             try
             {
-                var list = new List<string>();
+                //var list = new List<string>();
 
-                list.Add("1");
-                list.Add("2");
-                list.Add("3");
-                list.Add("4");
+                //list.Add("1");
+                //list.Add("2");
+                //list.Add("3");
+                //list.Add("4");
 
-                return list;
+                //return list;
 
 
-                //using (var context = SampleContextFactory.Create(_options.ConStr))
-                //{
-                //    var result = context.locations.ToList();
+        
 
-                //    return result;
-                //}
+                return _dbContext.locations.ToList();
             }
             catch (Exception ex)
             {

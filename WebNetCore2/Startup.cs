@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebNetCore2
 {
@@ -24,20 +25,10 @@ namespace WebNetCore2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Adds services required for using options.
-            services.AddOptions();
-
-            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration
-
-            // Register the ConfigurationBuilder instance which MyOptions binds against.
-            services.Configure<MyOptions>(Configuration);
-
-            // Registers the following lambda used to configure options.
-            services.Configure<MyOptions>(myOptions =>
+            services.AddDbContextPool<SampleDbContext>(optionsBuilder =>
             {
-                myOptions.ConStr = ConfigurationExtensions.GetConnectionString(this.Configuration, "SampleConnection");
+                optionsBuilder.UseMySql(ConfigurationExtensions.GetConnectionString(this.Configuration, "SampleConnection"));
             });
-
 
             //https://wildermuth.com/2017/08/19/Two-AuthorizationSchemes-in-ASP-NET-Core-2
             services.AddAuthentication()
@@ -52,7 +43,6 @@ namespace WebNetCore2
                     ValidAudience = Configuration["Tokens:Issuer"],
                     IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
                 };
-
             });
 
             //https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?tabs=visual-studio
