@@ -31,11 +31,15 @@ namespace WebNetCore2
             });
 
             //https://wildermuth.com/2017/08/19/Two-AuthorizationSchemes-in-ASP-NET-Core-2
-            services.AddAuthentication()
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+            })            
             .AddJwtBearer(cfg =>
             {
                 cfg.RequireHttpsMetadata = false;
-                cfg.SaveToken = true;
+                cfg.SaveToken = true;                
 
                 cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
