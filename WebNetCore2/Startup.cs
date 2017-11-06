@@ -30,22 +30,35 @@ namespace WebNetCore2
                 optionsBuilder.UseMySql(ConfigurationExtensions.GetConnectionString(this.Configuration, "SampleConnection"));
             });
 
-            //https://wildermuth.com/2017/08/19/Two-AuthorizationSchemes-in-ASP-NET-Core-2
+            
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
-            })            
+            })
             .AddJwtBearer(cfg =>
             {
-                cfg.RequireHttpsMetadata = false;
-                cfg.SaveToken = true;                
+                //https://wildermuth.com/2017/08/19/Two-AuthorizationSchemes-in-ASP-NET-Core-2
+                //cfg.RequireHttpsMetadata = false;
+                //cfg.SaveToken = true;
 
+                //cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                //{
+                //    ValidIssuer = Configuration["Tokens:Issuer"],
+                //    ValidAudience = Configuration["Tokens:Issuer"],
+                //    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                //};
+
+                //https://blog.markvincze.com/secure-an-asp-net-core-api-with-firebase/
+                cfg.IncludeErrorDetails = true;
+                cfg.Authority = "https://securetoken.google.com/prueba-2ef26";
                 cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
-                    ValidIssuer = Configuration["Tokens:Issuer"],
-                    ValidAudience = Configuration["Tokens:Issuer"],
-                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                    ValidateIssuer = true,
+                    ValidIssuer = "https://securetoken.google.com/prueba-2ef26",
+                    ValidateAudience = true,
+                    ValidAudience = "prueba-2ef26",
+                    ValidateLifetime = true,
                 };
             });
 
@@ -55,7 +68,25 @@ namespace WebNetCore2
                 c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "My API", Version = "v1" });
             });
 
+            //https://docs.microsoft.com/en-us/aspnet/core/security/cors
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                    //    builder.AllowAnyOrigin(); -> para permitir todos los orígenes
+                      .AllowAnyMethod()
+                      .WithHeaders("accept", "content-type", "origin", "authorization");
+                });
+            });
+
             services.AddMvc();
+
+            services.Configure<Microsoft.AspNetCore.Mvc.MvcOptions>(options =>
+            {
+                options.Filters.Add(new Microsoft.AspNetCore.Mvc.Cors.Internal.CorsAuthorizationFilterFactory("CorsPolicy"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
