@@ -30,7 +30,7 @@ namespace WebNetCore2
                 optionsBuilder.UseMySql(ConfigurationExtensions.GetConnectionString(this.Configuration, "SampleConnection"));
             });
 
-            
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
@@ -59,13 +59,21 @@ namespace WebNetCore2
                     ValidateAudience = true,
                     ValidAudience = "prueba-2ef26",
                     ValidateLifetime = true,
+
                 };
             });
+
 
             //https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?tabs=visual-studio
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "My API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new Swashbuckle.AspNetCore.Swagger.ApiKeyScheme()
+                {
+                    In = "header",
+                    Description = "JWT Bearer Token (ej: Bearer token)",
+                    Name = "Authorization"
+                });
             });
 
             //https://docs.microsoft.com/en-us/aspnet/core/security/cors
