@@ -27,7 +27,10 @@ namespace WebNetCore2.Controllers
             try
             {
 
+                var userId = HttpContext.User.Claims.First(c => c.Type == "user_id").Value;
+
                 var token = await HttpContext.GetTokenAsync("access_token");
+
 
                 var jwt = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(token);
                 
