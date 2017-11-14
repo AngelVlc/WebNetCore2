@@ -4,45 +4,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
-
+using WebNetCore2.Models;
 
 namespace WebNetCore2.Controllers
 {
     //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
-    [Microsoft.AspNetCore.Authorization.Authorize()]
+    //[Microsoft.AspNetCore.Authorization.Authorize()]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        private readonly SampleDbContext _dbContext;
 
-        public ValuesController(SampleDbContext dbContext)
+        public class Result
         {
-            _dbContext = dbContext;
+            public int Sev { get; set; }
+
+            public object Data { get; set; }
         }
+
 
         // GET api/values
         [HttpGet]
-        public async Task<object> Get()
+        //public async Task<IActionResult> Get()
+             public IActionResult Get()
         {
             try
-            {
+            {                
+                //var userId = HttpContext.User.Claims.First(c => c.Type == "user_id").Value;
+                //var token = await HttpContext.GetTokenAsync("access_token");
+                //var jwt = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(token);
 
-                var userId = HttpContext.User.Claims.First(c => c.Type == "user_id").Value;
+                throw new NotImplementedException("akdsklsdaklsda");
 
-                var token = await HttpContext.GetTokenAsync("access_token");
+                //var list = new List<string>();
 
+                //list.Add("1");
+                //list.Add("2");
+                //list.Add("3");
+                //list.Add("4");
 
-                var jwt = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(token);
-                
-
-                var list = new List<string>();
-
-                list.Add("1");
-                list.Add("2");
-                list.Add("3");
-                list.Add("4");
-
-                return list;
+                //return list;
 
 
 
@@ -51,7 +51,14 @@ namespace WebNetCore2.Controllers
             }
             catch (Exception ex)
             {
-                return ex.ToString();
+                return new BadRequestObjectResult("dasklsadkdksl");
+                //    var result = new Result()
+                //    {
+                //        Sev = 0,
+                //        Data = ex.ToString()
+                //    };
+
+                //    return new BadRequestObjectResult(result);
             }
         }
 

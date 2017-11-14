@@ -14,6 +14,8 @@ namespace WebNetCore2
     {
         public static void Main(string[] args)
         {
+            //Todo este código está cambiado, no es el que crea la plantilla de VS, pero hace lo mismo
+
             var webHost = new WebHostBuilder()
               .UseKestrel()
               .UseContentRoot(Directory.GetCurrentDirectory())
@@ -27,6 +29,8 @@ namespace WebNetCore2
               .ConfigureLogging((hostingContext, logging) =>
               {
                   //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?tabs=aspnetcore2x#how-to-add-providers
+
+                  // Trace = 0, Debug = 1, Info = 2, Warning = 3, Error = 4, Critical = 5
 
                   logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                   logging.AddConsole();

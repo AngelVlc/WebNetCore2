@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using WebNetCore2.Models;
 
 namespace WebNetCore2
 {
@@ -25,7 +26,7 @@ namespace WebNetCore2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<SampleDbContext>(optionsBuilder =>
+            services.AddDbContextPool<MySqlDbContext>(optionsBuilder =>
             {
                 optionsBuilder.UseMySql(ConfigurationExtensions.GetConnectionString(this.Configuration, "SampleConnection"));
             });
@@ -115,6 +116,8 @@ namespace WebNetCore2
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
+            app.UseMiddleware<RequestLoggingMiddleware>();
 
             app.UseMvc();
         }
