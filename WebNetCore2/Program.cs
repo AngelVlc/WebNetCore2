@@ -30,7 +30,7 @@ namespace WebNetCore2
               {
                   //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?tabs=aspnetcore2x#how-to-add-providers
 
-                  // Trace = 0, Debug = 1, Info = 2, Warning = 3, Error = 4, Critical = 5
+                  // Trace = 0, Debug = 1, Information = 2, Warning = 3, Error = 4, Critical = 5
 
                   logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                   logging.AddConsole();

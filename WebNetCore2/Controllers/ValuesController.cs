@@ -25,27 +25,26 @@ namespace WebNetCore2.Controllers
         // GET api/values
         [HttpGet]
         //public async Task<IActionResult> Get()
-             public IActionResult Get()
+        public IActionResult Get()
         {
             try
-            {                
+            {
                 //var userId = HttpContext.User.Claims.First(c => c.Type == "user_id").Value;
                 //var token = await HttpContext.GetTokenAsync("access_token");
                 //var jwt = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(token);
 
-                throw new NotImplementedException("akdsklsdaklsda");
+               // throw new NotImplementedException("akdsklsdaklsda");
 
-                //var list = new List<string>();
+                var list = new List<string>();
 
-                //list.Add("1");
-                //list.Add("2");
-                //list.Add("3");
-                //list.Add("4");
+                list.Add("1");
+                list.Add("2");
+                list.Add("3");
+                list.Add("4");
 
-                //return list;
+                return new OkObjectResult(list);
 
-
-
+                
 
                 // return _dbContext.locations.ToList();
             }

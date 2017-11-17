@@ -117,7 +117,16 @@ namespace WebNetCore2
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
+            app.Use(async (context, next) =>
+            {
+                // Do work that doesn't write to the Response.
+                await next.Invoke();
+                // Do logging or other work that doesn't write to the Response.
+            });
+
             app.UseMiddleware<RequestLoggingMiddleware>();
+
+            app.UseMiddleware<ResponseLoggingMiddleware>();
 
             app.UseMvc();
         }
