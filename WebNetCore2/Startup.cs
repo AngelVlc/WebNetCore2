@@ -26,11 +26,20 @@ namespace WebNetCore2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            /*
+                https://cmatskas.com/scaffolding-dbcontext-and-models-with-entityframework-core-2-0-and-the-cli/
+            
+                dotnet add package Microsoft.EntityFrameworkCore -v 2.0.0  
+                dotnet add package Microsoft.EntityFrameworkCore.Design-v 2.0.0              
+                dotnet add package Microsoft.EntityFrameworkCore.Tools.DotNet-v 2.0.0  
+
+                dotnet ef dbcontext scaffold "server=192.168.99.100;userid=root;password=root;database=sys;sslmode=none;" "Pomelo.EntityFrameworkCore.MySql" - o Models2
+            */
+
             services.AddDbContextPool<MySqlDbContext>(optionsBuilder =>
             {
                 optionsBuilder.UseMySql(ConfigurationExtensions.GetConnectionString(this.Configuration, "SampleConnection"));
             });
-
 
             services.AddAuthentication(options =>
             {
