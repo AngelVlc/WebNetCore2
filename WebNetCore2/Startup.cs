@@ -128,6 +128,8 @@ namespace WebNetCore2
 
             app.UseMiddleware<ResponseLoggingMiddleware>();
 
+            app.UseMiddleware<ErrorWrappingMiddleware>();
+
             app.UseMvc();
         }
     }

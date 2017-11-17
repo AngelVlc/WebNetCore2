@@ -27,13 +27,15 @@ namespace WebNetCore2.Controllers
         //public async Task<IActionResult> Get()
         public IActionResult Get()
         {
+            throw new NotImplementedException("akdsklsdaklsda");
+
             try
             {
                 //var userId = HttpContext.User.Claims.First(c => c.Type == "user_id").Value;
                 //var token = await HttpContext.GetTokenAsync("access_token");
                 //var jwt = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(token);
 
-               // throw new NotImplementedException("akdsklsdaklsda");
+
 
                 var list = new List<string>();
 
@@ -44,9 +46,7 @@ namespace WebNetCore2.Controllers
 
                 return new OkObjectResult(list);
 
-                
-
-                // return _dbContext.locations.ToList();
+                 
             }
             catch (Exception ex)
             {

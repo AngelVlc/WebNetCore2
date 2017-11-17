@@ -30,31 +30,18 @@ namespace WebNetCore2.Controllers
 
             try
             {
-                _logger.LogCritical("Inicio");
-                        result.Data = _dbContext.users.ToList();
+                result.Data = _dbContext.users.ToList();
 
-                        //return new OkObjectResult(result);
-                throw new NotImplementedException("not implemented");
+                return new OkObjectResult(result);                
             }
             catch (Exception ex)
             {
-
-                _logger.LogCritical("Catch");
-
                 result.Message = ex.Message;
-
                 result.Severity = 0;
 
                 return new BadRequestObjectResult(result);
-                
-                //return new BadRequestObjectResult("dasklsadkdksl");
             }
         }
-
-
-
-
-
 
         [HttpPut]
         public IActionResult CheckUser([FromBody] Models.Users user)
