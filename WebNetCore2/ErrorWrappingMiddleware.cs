@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,24 +27,26 @@ namespace WebNetCore2
             }
             catch (Exception ex)
             {
-               // _logger.LogError(EventIds.GlobalException, ex, ex.Message);
+                _logger.LogCritical(ex.Message);                
 
-                context.Response.StatusCode = 520;
+                context.Response.StatusCode = 500;
             }
 
-            //if (!context.Response.HasStarted)
-            //{
-            //    context.Response.ContentType = "application/json";
+            if (!context.Response.HasStarted)
+            {
+                context.Response.ContentType = "application/json";
 
-            //    var response = new ApiResponse(context.Response.StatusCode);
+                var result = new Models.ApiResult();
+                result.Severity = 0;
+                result.Message = "Ocurrió un error en el servidor";
+                                
+                var json = JsonConvert.SerializeObject(result, new JsonSerializerSettings
+                {
+                //    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
 
-            //    var json = JsonConvert.SerializeObject(response, new JsonSerializerSettings
-            //    {
-            //        ContractResolver = new CamelCasePropertyNamesContractResolver()
-            //    });
-
-            //    await context.Response.WriteAsync(json);
-            //}
+                await context.Response.WriteAsync(json);
+            }
         }
     }
 }

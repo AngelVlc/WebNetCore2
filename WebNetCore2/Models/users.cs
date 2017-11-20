@@ -8,7 +8,7 @@ namespace WebNetCore2.Models
 {    
     public class Users
     {
-        //[Key]
+        [Key]
         public int userId { get; set; }
 
         public int googleId { get; set; }
