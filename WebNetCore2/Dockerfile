@@ -1,3 +1,5 @@
+# https://docs.docker.com/engine/examples/dotnetcore/#create-a-dockerfile-for-an-aspnet-core-application
+
 FROM microsoft/aspnetcore-build:2.0 AS build-env
 WORKDIR /app
 
