@@ -13,21 +13,13 @@ namespace WebNetCore2.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-
-        public class Result
-        {
-            public int Sev { get; set; }
-
-            public object Data { get; set; }
-        }
-
-
+                
         // GET api/values
         [HttpGet]
         //public async Task<IActionResult> Get()
         public IActionResult Get()
         {
-            throw new NotImplementedException("akdsklsdaklsda");
+            //throw new NotImplementedException("akdsklsdaklsda");
 
             try
             {
@@ -44,7 +36,10 @@ namespace WebNetCore2.Controllers
                 list.Add("3");
                 list.Add("4");
 
-                return new OkObjectResult(list);
+                var result = new Models.ApiResult();
+                result.Data = list;
+
+                return new OkObjectResult(result);
 
                  
             }

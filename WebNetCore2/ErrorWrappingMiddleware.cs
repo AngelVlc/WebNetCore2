@@ -30,23 +30,20 @@ namespace WebNetCore2
                 _logger.LogCritical(ex.Message);                
 
                 context.Response.StatusCode = 500;
-            }
 
-            if (!context.Response.HasStarted)
-            {
                 context.Response.ContentType = "application/json";
 
                 var result = new Models.ApiResult();
                 result.Severity = 0;
                 result.Message = "Ocurrió un error en el servidor";
-                                
+
                 var json = JsonConvert.SerializeObject(result, new JsonSerializerSettings
                 {
-                //    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    //    ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });
 
                 await context.Response.WriteAsync(json);
-            }
+            }            
         }
     }
 }
