@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using WebNetCore2.Models;
+using WebNetCore2.Exceptions;
 
 namespace WebNetCore2.Controllers
 {
@@ -19,7 +20,8 @@ namespace WebNetCore2.Controllers
         //public async Task<IActionResult> Get()
         public IActionResult Get()
         {
-            //throw new NotImplementedException("akdsklsdaklsda");
+            //throw new InfoException("ex");
+            throw new ErrorException("info ex");
 
             try
             {
