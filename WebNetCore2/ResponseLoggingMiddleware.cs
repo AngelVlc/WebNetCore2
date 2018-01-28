@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using WebNetCore2.Models;
 
 namespace WebNetCore2
 {
@@ -20,20 +21,34 @@ namespace WebNetCore2
 
         public async Task Invoke(HttpContext context)
         {
+            var originalBodyStream = context.Response.Body;
 
-            var bodyStream = context.Response.Body;
-
-            var responseBodyStream = new MemoryStream();
-            context.Response.Body = responseBodyStream;
+            var newBodyStream = new MemoryStream();
+            context.Response.Body = newBodyStream;
 
             await _next(context);
 
-            responseBodyStream.Seek(0, SeekOrigin.Begin);
-            var responseBody = new StreamReader(responseBodyStream).ReadToEnd();
-            //_logger.Log(LogLevel.Trace, 1, $"RESPONSE LOG: {responseBody}", null, _defaultFormatter);
-            _logger.LogTrace($"RESPONSE HttpMethod: {context.Request.Method}, Path: {context.Request.Path}: { responseBody}");            
-            responseBodyStream.Seek(0, SeekOrigin.Begin);
-            await responseBodyStream.CopyToAsync(bodyStream);
+            newBodyStream.Seek(0, SeekOrigin.Begin);
+            var responseJsonBody = new StreamReader(newBodyStream).ReadToEnd();                                             
+
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject(responseJsonBody);
+
+            var apiResult = new ApiResult()
+            {
+                Data = result
+            };
+
+            var jsonApiResult = Newtonsoft.Json.JsonConvert.SerializeObject(apiResult);
+
+            _logger.LogTrace($"RESPONSE HttpMethod: {context.Request.Method}, Path: {context.Request.Path}: { jsonApiResult}");
+
+            context.Response.Body = originalBodyStream;
+
+            await context.Response.WriteAsync(jsonApiResult);
+
+            //newBodyStream.Seek(0, SeekOrigin.Begin);
+
+            //await newBodyStream.CopyToAsync(originalBodyStream);
         }
     }
 }

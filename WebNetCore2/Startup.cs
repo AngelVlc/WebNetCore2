@@ -132,9 +132,9 @@ namespace WebNetCore2
                 await next.Invoke();
                 // Do logging or other work that doesn't write to the Response.
             });
-
+            
             app.UseMiddleware<RequestLoggingMiddleware>();
-
+            
             app.UseMiddleware<ResponseLoggingMiddleware>();
 
             app.UseMiddleware<ErrorWrappingMiddleware>();

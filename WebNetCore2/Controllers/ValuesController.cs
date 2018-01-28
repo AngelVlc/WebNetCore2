@@ -21,7 +21,6 @@ namespace WebNetCore2.Controllers
         public IActionResult Get()
         {
             //throw new InfoException("ex");
-            throw new ErrorException("info ex");
 
             try
             {
@@ -37,11 +36,12 @@ namespace WebNetCore2.Controllers
                 list.Add("2");
                 list.Add("3");
                 list.Add("4");
+                list.Add("5");
 
                 var result = new Models.ApiResult();
                 result.Data = list;
 
-                return new OkObjectResult(result);
+                return new OkObjectResult(list);
 
                  
             }
