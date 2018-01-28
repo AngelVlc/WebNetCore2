@@ -16,6 +16,19 @@ namespace WebNetCore2
         {
             //Todo este código está cambiado, no es el que crea la plantilla de VS, pero hace lo mismo
 
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var isDevelopment = environment == EnvironmentName.Development;
+
+            var urlToUse = string.Empty;
+
+            if (!isDevelopment)
+            {
+                  urlToUse = $"http://*:{Environment.GetEnvironmentVariable("PORT")}/";
+
+                Console.WriteLine($"Using Url: {urlToUse}");
+            }
+
+
             var webHost = new WebHostBuilder()
               .UseKestrel()
               .UseContentRoot(Directory.GetCurrentDirectory())
@@ -37,6 +50,7 @@ namespace WebNetCore2
                   logging.AddDebug();
               })
               .UseStartup<Startup>()
+              .UseUrls(urlToUse)
               .Build();
 
             webHost.Run();
