@@ -34,11 +34,13 @@ namespace WebNetCore2
                 dotnet add package Microsoft.EntityFrameworkCore.Tools.DotNet-v 2.0.0  
 
                 dotnet ef dbcontext scaffold "server=192.168.99.100;userid=root;password=root;database=sys;sslmode=none;" "Pomelo.EntityFrameworkCore.MySql" - o Models2
+
+            dotnet ef dbcontext scaffold "Server=eu-cdbr-west-01.cleardb.com;User Id=bb2bf97cab90ee;Password=93bca23c;Database=heroku_acabb8e58c52d34" "Pomelo.EntityFrameworkCore.MySql" -o Models2 -c FisioDbContext
             */
 
-            services.AddDbContextPool<MySqlDbContext>(optionsBuilder =>
+            services.AddDbContextPool<WebNetCore2.Models2.FisioDbContext>(optionsBuilder =>
             {
-                optionsBuilder.UseMySql(ConfigurationExtensions.GetConnectionString(this.Configuration, "SampleConnection"));
+                optionsBuilder.UseMySql(ConfigurationExtensions.GetConnectionString(this.Configuration, "FisioConnection"));
             });
 
             services.AddAuthentication(options =>
@@ -99,7 +101,15 @@ namespace WebNetCore2
                 });
             });
 
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(opt =>
+                {                    
+                    opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    opt.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+                    
+                    opt.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
+                    opt.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local;
+                });
 
             services.Configure<Microsoft.AspNetCore.Mvc.MvcOptions>(options =>
             {
@@ -132,9 +142,9 @@ namespace WebNetCore2
                 await next.Invoke();
                 // Do logging or other work that doesn't write to the Response.
             });
-            
+
             app.UseMiddleware<RequestLoggingMiddleware>();
-            
+
             app.UseMiddleware<ResponseLoggingMiddleware>();
 
             app.UseMiddleware<ErrorWrappingMiddleware>();

@@ -29,26 +29,31 @@ namespace WebNetCore2
             await _next(context);
 
             newBodyStream.Seek(0, SeekOrigin.Begin);
-            var responseJsonBody = new StreamReader(newBodyStream).ReadToEnd();                                             
+            var responseJsonBody = new StreamReader(newBodyStream).ReadToEnd();
 
-            var result = Newtonsoft.Json.JsonConvert.DeserializeObject(responseJsonBody);
-
-            var apiResult = new ApiResult()
+            if (context.Response.StatusCode == 200)
             {
-                Data = result
-            };
+                var result = Newtonsoft.Json.JsonConvert.DeserializeObject(responseJsonBody);
 
-            var jsonApiResult = Newtonsoft.Json.JsonConvert.SerializeObject(apiResult);
+                var apiResult = new ApiResult()
+                {
+                    Data = result
+                };
 
-            _logger.LogTrace($"RESPONSE HttpMethod: {context.Request.Method}, Path: {context.Request.Path}: { jsonApiResult}");
+                var jsonApiResult = Newtonsoft.Json.JsonConvert.SerializeObject(apiResult);
 
-            context.Response.Body = originalBodyStream;
+                _logger.LogTrace($"RESPONSE HttpMethod: {context.Request.Method}, Path: {context.Request.Path}: { jsonApiResult}");
 
-            await context.Response.WriteAsync(jsonApiResult);
+                context.Response.Body = originalBodyStream;
 
-            //newBodyStream.Seek(0, SeekOrigin.Begin);
+                await context.Response.WriteAsync(jsonApiResult);
+            }
+            else
+            {                
+                newBodyStream.Seek(0, SeekOrigin.Begin);
 
-            //await newBodyStream.CopyToAsync(originalBodyStream);
+                await newBodyStream.CopyToAsync(originalBodyStream);
+            }            
         }
     }
 }
