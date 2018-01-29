@@ -51,28 +51,28 @@ namespace WebNetCore2
             .AddJwtBearer(cfg =>
             {
                 //https://wildermuth.com/2017/08/19/Two-AuthorizationSchemes-in-ASP-NET-Core-2
-                //cfg.RequireHttpsMetadata = false;
-                //cfg.SaveToken = true;
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
 
-                //cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
-                //{
-                //    ValidIssuer = Configuration["Tokens:Issuer"],
-                //    ValidAudience = Configuration["Tokens:Issuer"],
-                //    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
-                //};
-
-                //https://blog.markvincze.com/secure-an-asp-net-core-api-with-firebase/
-                cfg.IncludeErrorDetails = true;
-                cfg.Authority = "https://securetoken.google.com/prueba-2ef26";
                 cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
-                    ValidateIssuer = true,
-                    ValidIssuer = "https://securetoken.google.com/prueba-2ef26",
-                    ValidateAudience = true,
-                    ValidAudience = "prueba-2ef26",
-                    ValidateLifetime = true,
-
+                    ValidIssuer = Configuration["Tokens:Issuer"],
+                    ValidAudience = Configuration["Tokens:Issuer"],
+                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
                 };
+
+                //https://blog.markvincze.com/secure-an-asp-net-core-api-with-firebase/
+                //cfg.IncludeErrorDetails = true;
+                //cfg.Authority = "https://securetoken.google.com/prueba-2ef26";
+                //cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                //{
+                //    ValidateIssuer = true,
+                //    ValidIssuer = "https://securetoken.google.com/prueba-2ef26",
+                //    ValidateAudience = true,
+                //    ValidAudience = "prueba-2ef26",
+                //    ValidateLifetime = true,
+
+                //};
             });
 
 

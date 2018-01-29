@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using WebNetCore2.Models;
 using WebNetCore2.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebNetCore2.Controllers
 {
@@ -17,6 +18,7 @@ namespace WebNetCore2.Controllers
                 
         // GET api/values
         [HttpGet]
+        [Authorize]
         //public async Task<IActionResult> Get()
         public IActionResult Get()
         {
